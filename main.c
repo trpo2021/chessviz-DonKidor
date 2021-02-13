@@ -5,7 +5,7 @@ int main()
     char table[8][8];
     for (int i = 0; i < 8; ++i)
         for (int j = 0; j < 8; ++j)
-            table[i][j] = '0';
+            table[i][j] = 0;
     for (int i = 0; i < 8; ++i) {
         table[1][i] = 'p';
         table[6][i] = 'P';
