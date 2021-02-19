@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main(int argvn, char *arg[])
+int main(int argvn, char* arg[])
 {
     char table[8][8];
     for (int i = 0; i < 8; ++i)
