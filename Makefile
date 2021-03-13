@@ -1,4 +1,5 @@
 APP_NAME = chess
+LIB_NAME = chesslib
 
 CFLAGS = -Wall -Werror
 CPPFLAGS = -MMD -I src
@@ -9,11 +10,15 @@ OBJ_DIR = obj
 SRC_DIR = src
 
 APP_PATH = $(BIN_DIR)/$(APP_NAME)
+LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(LIB_NAME)/$(LIB_NAME).a
 
 SRC_EXT = cpp
 
 APP_SOURCES = $(shell find $(SRC_DIR)/$(APP_NAME) -name '*.$(SRC_EXT)')
 APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
+
+LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB_NAME) -name '*.$(SRC_EXT)')
+LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
 DEPS = $(APP_OBJECTS:.o=.d)
 
@@ -24,8 +29,11 @@ all: $(APP_PATH)
 
 
 
-$(APP_PATH): $(APP_OBJECTS)
+$(APP_PATH): $(APP_OBJECTS) $(LIB_PATH)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+
+$(LIB_PATH): $(LIB_OBJECTS)
+	ar rcs $@ $^
 
 $(OBJ_DIR)/%.o: %.$(SRC_EXT)
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
