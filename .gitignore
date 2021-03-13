@@ -1,6 +1,8 @@
 *
-*.o
-*.out
 !*.*
 !*/
 !Makefile
+*.a
+*.o
+*.out
+*.d
