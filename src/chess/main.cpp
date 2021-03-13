@@ -1,3 +1,4 @@
+#include <chesslib/board_print.h>
 #include <stdio.h>
 
 int main(int argvn, char* arg[])
@@ -26,13 +27,6 @@ int main(int argvn, char* arg[])
     table[7][3] = 'Q';
     table[0][4] = 'k';
     table[7][4] = 'K';
-    for (int i = 0; i < 8; ++i) {
-        printf("%d ", 8 - i);
-        for (int j = 0; j < 8; ++j) {
-            printf("%c ", table[i][j]);
-        }
-        printf("\n");
-    }
-    printf("  a b c d e f g h\n");
+    printBoard(table);
     return 0;
 }
