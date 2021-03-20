@@ -1,4 +1,5 @@
 #include <chesslib/board_print.h>
+#include <iostream>
 #include <stdio.h>
 
 int main(int argvn, char* arg[])
@@ -30,20 +31,40 @@ int main(int argvn, char* arg[])
 
     do {
         printBoard(table);
-        char x, y, x2, y2, t;
-        scanf("%c%c%c%c%c%c", &x, &y, &t, &x2, &y2, &t);
-        printf("\n");
-        int tx1, tx2, ty1, ty2;
-        tx1 = x - 'a';
-        tx2 = x2 - 'a';
-        ty1 = y - '1';
-        ty2 = y2 - '1';
-        ty1 = 7 - ty1;
-        ty2 = 7 - ty2;
-        if (tx1 == 0 && ty1 == 0 && tx2 == 0 && ty2 == 0)
-            break;
-        table[ty2][tx2] = table[ty1][tx1];
-        table[ty1][tx1] = ' ';
+        char s[20];
+        std::cin.getline(s, 20);
+        char in[2][10];
+        
+        for (int i = 0, k = -1, t = 0, f = 0; i < 20; ++i) {
+            if (s[i] == '.') {
+                k++;
+                continue;
+            }
+            if (k < 0)
+                continue;
+            in[k][t++] = s[i];
+            if ((s[i] >= 'a' && s[i] <= 'h') || (s[i] >= '1' && s[i] <= '8'))
+                f++;
+            if (f >= 4) {
+                in[k][t] = 0;
+                t = 0;
+                k++;
+                f = 0;
+            }
+        }
+        std::cout << in[0] << " " << in[1] << '\n';
+        move m[2];
+        m[0] = getMove(in[0]);
+        m[1] = getMove(in[1]);
+        for (int i = 0; i < 2; ++i) {
+        	std::cout << m[i].fig <<(char)(table[m[i].y][m[i].x])<<m[i].x << " "<< m[i].y << " "<< m[i].x2 << " "<< m[i].y2 << "\n";
+        	std::cout << (m[i].fig==table[m[i].y][m[i].x]+(i>0)*('A'-'a'))<<"\n";
+            if (m[i].fig==table[m[i].y][m[i].x]+(i>0)*('A'-'a') ) {//&&checkMove(m[i], i)
+            	
+   	           	table[m[i].y2][m[i].x2]=table[m[i].y][m[i].x];
+   	           	table[m[i].y][m[i].x]=' ';
+            }
+        }
     } while (true);
     return 0;
 }
