@@ -4,6 +4,7 @@
 
 int main(int argvn, char* arg[])
 {
+	game game;
     char table[8][8];
     for (int i = 0; i < 8; ++i)
         for (int j = 0; j < 8; ++j)
@@ -29,8 +30,12 @@ int main(int argvn, char* arg[])
     table[0][4] = 'k';
     table[7][4] = 'K';
 
+	for(int i=0;i<8;++i)
+		for(int j=0;j<8;++j)
+			game.board[i][j]=table[i][j];
+	game.colorMove=0;
     do {
-        printBoard(table);
+        printBoard(game.board);
         char s[20];
         std::cin.getline(s, 20);
         char in[2][10];
@@ -57,13 +62,11 @@ int main(int argvn, char* arg[])
         m[0] = getMove(in[0]);
         m[1] = getMove(in[1]);
         for (int i = 0; i < 2; ++i) {
-        	std::cout << m[i].fig <<(char)(table[m[i].y][m[i].x])<<m[i].x << " "<< m[i].y << " "<< m[i].x2 << " "<< m[i].y2 << "\n";
-        	std::cout << (m[i].fig==table[m[i].y][m[i].x]+(i>0)*('A'-'a'))<<"\n";
-            if (m[i].fig==table[m[i].y][m[i].x]+(i>0)*('A'-'a') ) {//&&checkMove(m[i], i)
-            	
-   	           	table[m[i].y2][m[i].x2]=table[m[i].y][m[i].x];
-   	           	table[m[i].y][m[i].x]=' ';
+            if (checkMove(m[i], game)) {
+            	game.board[m[i].y2][m[i].x2]=game.board[m[i].y][m[i].x];
+            	game.board[m[i].y][m[i].x]=' ';
             }
+            game.colorMove=(game.colorMove+1)%2;
         }
     } while (true);
     return 0;
