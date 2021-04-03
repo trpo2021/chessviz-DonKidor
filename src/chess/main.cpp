@@ -1,9 +1,22 @@
 #include <chesslib/board_print.h>
 #include <iostream>
 #include <stdio.h>
+#include <string>
+#include <fstream>
+
 
 int main(int argvn, char* arg[])
 {
+	std::ifstream f;
+	bool inputFile=false;
+	for(int i=1;i<argvn;++i) {
+		if(arg[i]==std::string("-I")) {
+			if(argvn>i+1) {
+				f.open(arg[i+1]);
+				inputFile=true;
+			}
+		}
+	}
 	game game;
     char table[8][8];
     for (int i = 0; i < 8; ++i)
@@ -37,37 +50,24 @@ int main(int argvn, char* arg[])
     do {
         printBoard(game.board);
         char s[20];
-        std::cin.getline(s, 20);
-        char in[2][10];
+        if(inputFile) {
+        	f.getline(s,20);
+        } else
+	        std::cin.getline(s, 20);
         
-        for (int i = 0, k = -1, t = 0, f = 0; i < 20; ++i) {
-            if (s[i] == '.') {
-                k++;
-                continue;
-            }
-            if (k < 0)
-                continue;
-            in[k][t++] = s[i];
-            if ((s[i] >= 'a' && s[i] <= 'h') || (s[i] >= '1' && s[i] <= '8'))
-                f++;
-            if (f >= 4) {
-                in[k][t] = 0;
-                t = 0;
-                k++;
-                f = 0;
-            }
-        }
-        std::cout << in[0] << " " << in[1] << '\n';
+        
         move m[2];
-        m[0] = getMove(in[0]);
-        m[1] = getMove(in[1]);
+        getMoves(s,m[0],m[1]);
         for (int i = 0; i < 2; ++i) {
             if (checkMove(m[i], game)) {
             	game.board[m[i].y2][m[i].x2]=game.board[m[i].y][m[i].x];
             	game.board[m[i].y][m[i].x]=' ';
             }
+            else return 1;
             game.colorMove=(game.colorMove+1)%2;
         }
+        std::cout << "\nPress any key...\n";
+        std::cin.get();
     } while (true);
     return 0;
 }
