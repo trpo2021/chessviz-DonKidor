@@ -1,9 +1,8 @@
 #include "board_print.h"
 #include <stdio.h>
 
-
 using namespace std;
-#define ABS(X) ((X)>=0)?(X):(-(X))
+#define ABS(X) ((X) >= 0) ? (X) : (-(X))
 
 void printBoard(char table[8][8])
 {
@@ -19,38 +18,68 @@ void printBoard(char table[8][8])
 
 bool checkMove(move m, game game)
 {
-	int bw=game.colorMove;
-	printf("\n%d %d %d %d\n",m.x,m.y,m.x2,m.y2);
+    int bw = game.colorMove;
+    printf("\n%d %d %d %d\n", m.x, m.y, m.x2, m.y2);
     if (!(m.x >= 0 && m.x <= 7) || !(m.y2 >= 0 && m.y2 <= 7)
         || !(m.y >= 0 && m.y <= 7) || !(m.x2 >= 0 && m.x2 <= 7))
         return false;
-    
-    if(m.fig+bw*('a'-'A')!=game.board[m.y][m.x]) return false;
-    
+
+    if (m.fig + bw * ('a' - 'A') != game.board[m.y][m.x])
+        return false;
+
     switch (m.fig) {
-    	case 'P':
-        	
-       		if(m.split=='-')
-       		{
-       			if(bw==0) {
-       				for(int i=m.y-1;i>=m.y2;--i) if(game.board[i][m.x]!=' ') return false;
-       			}
-       			else
-        			for(int i=m.y+1;i<=m.y2;++i) {
-        				if(game.board[i][m.x]!=' ') return false;
-        			}
-        		printf("%d \n",(ABS(m.y2-m.y)));
-        		return m.x==m.x2 && ( ((m.y==6-bw*5)&&(ABS(m.y2-m.y)==2))||(ABS(m.y2-m.y)==1)  );
-        	}
-        	else if(m.split=='x'){
-        		if(!((game.board[m.y2][m.x2]>=('a'-bw*('a'-'A')))&&(game.board[m.y2][m.x2]<=('z'-bw*('a'-'A'))))) return false;
-        		
-        		return (ABS(m.x-m.x2)==1)&&(m.y==m.y2+1-bw*2);
-        	}	
-        	
-    	default:
-        	return false;
+    case 'P':
+
+        if (m.split == '-') {
+            if (bw == 0) {
+                for (int i = m.y - 1; i >= m.y2; --i)
+                    if (game.board[i][m.x] != ' ')
+                        return false;
+            } else
+                for (int i = m.y + 1; i <= m.y2; ++i) {
+                    if (game.board[i][m.x] != ' ')
+                        return false;
+                }
+            printf("%d \n", (ABS(m.y2 - m.y)));
+            return m.x == m.x2
+                    && (((m.y == 6 - bw * 5) && (ABS(m.y2 - m.y) == 2))
+                        || (ABS(m.y2 - m.y) == 1));
+        } else if (m.split == 'x') {
+            if (!((game.board[m.y2][m.x2] >= ('a' - bw * ('a' - 'A')))
+                  && (game.board[m.y2][m.x2] <= ('z' - bw * ('a' - 'A')))))
+                return false;
+
+            return (ABS(m.x - m.x2) == 1) && (m.y == m.y2 + 1 - bw * 2);
+        }
+
+    default:
+        return false;
     }
+}
+
+void getMoves(char* s, move& m1, move& m2)
+{
+    char in[2][10];
+
+    for (int i = 0, k = -1, t = 0, f = 0; i < 20; ++i) {
+        if (s[i] == '.') {
+            k++;
+            continue;
+        }
+        if (k < 0)
+            continue;
+        in[k][t++] = s[i];
+        if ((s[i] >= 'a' && s[i] <= 'h') || (s[i] >= '1' && s[i] <= '8'))
+            f++;
+        if (f >= 4) {
+            in[k][t] = 0;
+            t = 0;
+            k++;
+            f = 0;
+        }
+    }
+    m1 = getMove(in[0]);
+    m2 = getMove(in[1]);
 }
 
 move getMove(char* s)

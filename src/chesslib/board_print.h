@@ -17,3 +17,4 @@ struct game {
 void printBoard(char table[8][8]);
 move getMove(char* s);
 bool checkMove(move m, game game);
+void getMoves(char* s, move& m1, move& m2);
