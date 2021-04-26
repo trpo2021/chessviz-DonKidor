@@ -48,7 +48,7 @@ int main(int argvn, char* arg[])
     game.colorMove = 0;
     do {
         printBoard(game.board);
-        char s[20];
+        char s[40];
         if (inputFile) {
             f.getline(s, 20);
         } else

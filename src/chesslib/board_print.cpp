@@ -59,9 +59,9 @@ bool checkMove(move m, game game)
 
 void getMoves(char* s, move& m1, move& m2)
 {
-    char in[2][10];
+    char in[2][20];
 
-    for (int i = 0, k = -1, t = 0, f = 0; i < 20; ++i) {
+    for (int i = 0, k = -1, t = 0, f = 0; k < 2 && i < 20; ++i) {
         if (s[i] == '.') {
             k++;
             continue;
@@ -78,6 +78,7 @@ void getMoves(char* s, move& m1, move& m2)
             f = 0;
         }
     }
+
     m1 = getMove(in[0]);
     m2 = getMove(in[1]);
 }
@@ -90,7 +91,7 @@ move getMove(char* s)
     for (int i = 0; i < 20; i++) {
         if (s[i] == ' ')
             continue;
-        ;
+
         r[length++] = s[i];
         if (r[length - 1] == 0 || r[length - 1] == '\n') {
             break;
@@ -109,6 +110,5 @@ move getMove(char* s)
     res.x2 = r[3] - 'a';
     res.y = 7 - r[1] + '1';
     res.y2 = 7 - r[4] + '1';
-
     return res;
 }
