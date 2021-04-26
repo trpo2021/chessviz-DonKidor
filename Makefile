@@ -43,3 +43,4 @@ clean:
 	$(RM) $(APP_PATH)
 	find $(OBJ_DIR) -name '*.o' -exec $(RM) '{}' \;
 	find $(OBJ_DIR) -name '*.d' -exec $(RM) '{}' \;
+	find $(OBJ_DIR) -name '*.a' -exec $(RM) '{}' \;
